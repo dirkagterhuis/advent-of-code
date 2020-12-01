@@ -18,6 +18,6 @@ for (i = 0; i <= input.length; i++) {
                 }
             }
         if (result) { break; }
-        }
+    }
 }
 console.log(result);
