@@ -34,15 +34,14 @@ function puzzleOne() {
 
 function puzzleTwo() {
     var validPasswords = 0;
-
     input.forEach(element => {
-            requiredChar = element.passwordPolicy.characterRequirement;
-            char1Match = requiredChar == element.password.charAt(element.passwordPolicy.characterMinAllowed - 1);
-            char2Match = requiredChar == element.password.charAt(element.passwordPolicy.characterMaxAllowed - 1);
-            if (char1Match && char2Match) return;
-            if (char1Match || char2Match) {
-                validPasswords++
-            }
+        requiredChar = element.passwordPolicy.characterRequirement;
+        char1Match = requiredChar == element.password.charAt(element.passwordPolicy.characterMinAllowed - 1);
+        char2Match = requiredChar == element.password.charAt(element.passwordPolicy.characterMaxAllowed - 1);
+        if (char1Match && char2Match) return;
+        if (char1Match || char2Match) {
+            validPasswords++
+        }
     });
     return validPasswords;
 }
