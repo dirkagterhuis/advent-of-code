@@ -1,30 +1,55 @@
 var fs = require('fs');
 
 var input = new Array();
-var startCoordinateX = 0;
-var startCoordinateY = 0;
-
 fs.readFileSync('./input.txt', 'utf-8')
-    .split(/[\r\n]+/g)
+    .trim()
+    .replace(/\r\n/g, '\n')
+    .split(/\n{2,}/g)
     .forEach(element => {
-        input.push(element.split(''));
+        var passport = new Object();
+        element.split('\n')
+            .join(' ')
+            .split(' ')
+            .forEach(innerElement => {
+                var innerPiece = innerElement.split(':');
+                passport[innerPiece[0]] = innerPiece[1];
+            })
+        input.push({ passport });
     });
 
-// Access first row, (vertical) then column (horizontal) or access [x,y]: x = vertical, y = horizontal:
-// console.log(input[2][1]);
-// console.table(input);
-
-function puzzleOne(slopeRight, slopeDown) {
-    let treeCount = 0;
-    let y = startCoordinateY;
-    for (x = startCoordinateX + slopeDown; x <= input.length - 1; x = x + slopeDown) {
-        y = y + slopeRight;
-        if (input[x][y % input[x].length] == '#') {
-            treeCount++
-        }
-    }
-    return treeCount;
+function puzzleOne() {
+    var validPassportCount = 0;
+    input.forEach(passportToCheck => {
+        var actualPassport = passportToCheck.passport
+        if (actualPassport.byr && actualPassport.iyr && actualPassport.eyr && actualPassport.hgt && actualPassport.hcl && actualPassport.ecl && actualPassport.pid) {
+            validPassportCount++; 
+        }        
+    });
+    return validPassportCount;
 }
 
-console.log('Puzzle One: # of trees = ' + puzzleOne(3,1));
-console.log('Puzzle Two: # of trees = ' + puzzleOne(1, 1) * puzzleOne (3, 1) * puzzleOne(5, 1) * puzzleOne(7, 1) * puzzleOne(1, 2));
+function puzzleTwo() {
+    var validPassportCount = 0;
+    for (i = 0; i < input.length; i++) {
+        var passport = input[i].passport;
+        if (!passport.byr || !passport.iyr || !passport.eyr || !passport.hgt || !passport.hcl || !passport.ecl || !passport.pid) {
+            continue;
+        }        
+        if (parseInt(passport.byr) < 1920 || parseInt(passport.byr) > 2002) { continue; }
+        if (parseInt(passport.iyr) < 2010 || parseInt(passport.iyr) > 2020) { continue; }
+        if (parseInt(passport.eyr) < 2020 || parseInt(passport.eyr) > 2030) { continue; }
+        var unit = passport.hgt.slice(passport.hgt.length - 2);
+        var unitValue = passport.hgt.slice(0, -2); 
+        if (unit != 'cm' && unit != 'in') { continue; }
+        if (unit == 'cm' && (unitValue < 150 || unitValue > 193)) { continue; }
+        if (unit == 'in' && (unitValue < 59 || unitValue > 76)) { continue; }
+        if (!passport.hcl.match(/^#[0-9A-F]{6}$/i)) { continue; } 
+        if (passport.ecl != 'amb' && passport.ecl != 'blu' && passport.ecl != 'brn' && passport.ecl != 'gry' && passport.ecl != 'grn' && passport.ecl != 'hzl' && passport.ecl != 'oth') { continue; }
+        if (!passport.pid.match(/^[0-9]{9}$/i)) { continue; } 
+        validPassportCount++;
+    }
+    return validPassportCount;
+}
+
+console.log('Puzzle One:' + puzzleOne());
+console.log('Puzzle Two:' + puzzleTwo());
