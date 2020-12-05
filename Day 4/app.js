@@ -40,16 +40,16 @@ function puzzleTwo() {
         if (parseInt(passport.eyr) < 2020 || parseInt(passport.eyr) > 2030) { continue; }
         var unit = passport.hgt.slice(passport.hgt.length - 2);
         var unitValue = passport.hgt.slice(0, -2); 
-        if (unit != 'cm' && unit != 'in') { continue; }
+        if (!['cm','in'].includes(unit)) { continue; }
         if (unit == 'cm' && (unitValue < 150 || unitValue > 193)) { continue; }
         if (unit == 'in' && (unitValue < 59 || unitValue > 76)) { continue; }
         if (!passport.hcl.match(/^#[0-9A-F]{6}$/i)) { continue; } 
-        if (passport.ecl != 'amb' && passport.ecl != 'blu' && passport.ecl != 'brn' && passport.ecl != 'gry' && passport.ecl != 'grn' && passport.ecl != 'hzl' && passport.ecl != 'oth') { continue; }
+        if (!['amb', 'blu', 'brn','gry','grn','hzl','oth'].includes(passport.ecl)) { continue; }
         if (!passport.pid.match(/^[0-9]{9}$/i)) { continue; } 
         validPassportCount++;
     }
     return validPassportCount;
 }
 
-console.log('Puzzle One:' + puzzleOne());
-console.log('Puzzle Two:' + puzzleTwo());
+console.log('Puzzle One:' + puzzleOne()); // 222
+console.log('Puzzle Two:' + puzzleTwo()); // 140
