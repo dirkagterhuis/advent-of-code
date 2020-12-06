@@ -14,7 +14,7 @@ fs.readFileSync('./input.txt', 'utf-8')
                 var innerPiece = innerElement.split(':');
                 passport[innerPiece[0]] = innerPiece[1];
             })
-        input.push({ passport });
+        input.push({ passport }); // later: try to just push the passport, not the object of a passport as this is probably the cause of the objet name being in the array
     });
 
 function puzzleOne() {
