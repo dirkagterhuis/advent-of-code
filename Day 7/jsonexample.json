@@ -1,0 +1,199 @@
+[
+  {
+    "color": "lightred",
+    "childBags": [
+      {
+        "color": "brightwhite",
+        "numberOfChildBags": 1
+      },
+      {
+        "color": "mutedyellow",
+        "numberOfChildBags": 2
+      }
+    ],
+    "parentBags": []
+  },
+  {
+    "color": "darkorange",
+    "childBags": [
+      {
+        "color": "brightwhite",
+        "numberOfChildBags": 3
+      },
+      {
+        "color": "mutedyellow",
+        "numberOfChildBags": 4
+      }
+    ],
+    "parentBags": []
+  },
+  {
+    "color": "brightwhite",
+    "childBags": [
+      {
+        "color": "shinygold",
+        "numberOfChildBags": 1
+      }
+    ],
+    "parentBags": [
+      {
+        "color": "lightred",
+        "numberOfBagsInParent": 1
+      },
+      {
+        "color": "darkorange",
+        "numberOfBagsInParent": 3
+      }
+    ]
+  },
+  {
+    "color": "mutedyellow",
+    "childBags": [
+      {
+        "color": "shinygold",
+        "numberOfChildBags": 2
+      },
+      {
+        "color": "fadedblue",
+        "numberOfChildBags": 9
+      }
+    ],
+    "parentBags": [
+      {
+        "color": "lightred",
+        "numberOfBagsInParent": 2
+      },
+      {
+        "color": "darkorange",
+        "numberOfBagsInParent": 4
+      }
+    ]
+  },
+  {
+    "color": "shinygold",
+    "childBags": [
+      {
+        "color": "darkolive",
+        "numberOfChildBags": 1
+      },
+      {
+        "color": "vibrantplum",
+        "numberOfChildBags": 2
+      }
+    ],
+    "parentBags": [
+      {
+        "color": "brightwhite",
+        "numberOfBagsInParent": 1
+      },
+      {
+        "color": "mutedyellow",
+        "numberOfBagsInParent": 2
+      }
+    ]
+  },
+  {
+    "color": "darkolive",
+    "childBags": [
+      {
+        "color": "fadedblue",
+        "numberOfChildBags": 3
+      },
+      {
+        "color": "dottedblack",
+        "numberOfChildBags": 4
+      }
+    ],
+    "parentBags": [
+      {
+        "color": "shinygold",
+        "numberOfBagsInParent": 1
+      }
+    ]
+  },
+  {
+    "color": "vibrantplum",
+    "childBags": [
+      {
+        "color": "fadedblue",
+        "numberOfChildBags": 5
+      },
+      {
+        "color": "dottedblack",
+        "numberOfChildBags": 6
+      }
+    ],
+    "parentBags": [
+      {
+        "color": "shinygold",
+        "numberOfBagsInParent": 2
+      }
+    ]
+  },
+  {
+    "color": "fadedblue",
+    "childBags": [],
+    "parentBags": [
+      {
+        "color": "mutedyellow",
+        "numberOfBagsInParent": 9
+      },
+      {
+        "color": "darkolive",
+        "numberOfBagsInParent": 3
+      },
+      {
+        "color": "vibrantplum",
+        "numberOfBagsInParent": 5
+      }
+    ]
+  },
+  {
+    "color": "dottedblack",
+    "childBags": [],
+    "parentBags": [
+      {
+        "color": "darkolive",
+        "numberOfBagsInParent": 4
+      },
+      {
+        "color": "vibrantplum",
+        "numberOfBagsInParent": 6
+      }
+    ]
+  }
+]
+***
+colorToFind: {
+  "color": "shinygold",
+  "childBags": [
+    {
+      "color": "darkolive",
+      "numberOfChildBags": 1
+    },
+    {
+      "color": "vibrantplum",
+      "numberOfChildBags": 2
+    }
+  ],
+  "parentBags": [
+    {
+      "color": "brightwhite",
+      "numberOfBagsInParent": 1
+    },
+    {
+      "color": "mutedyellow",
+      "numberOfBagsInParent": 2
+    }
+  ]
+}
+colorToFind.parentBags[
+  {
+    "color": "brightwhite",
+    "numberOfBagsInParent": 1
+  },
+  {
+    "color": "mutedyellow",
+    "numberOfBagsInParent": 2
+  }
+]
