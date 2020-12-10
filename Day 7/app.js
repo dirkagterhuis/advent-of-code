@@ -1,9 +1,7 @@
-const { count } = require('console');
 var fs = require('fs');
-const { setMaxListeners } = require('process');
 
 var input = [];
-fs.readFileSync('./inputExample.txt', 'utf-8')
+fs.readFileSync('./input.txt', 'utf-8')
     .trim()
     .replace(/\r\n/g, '\n')
     .split(/\n/g)
@@ -55,7 +53,6 @@ var colorToFind = input.filter(obj => {
     return obj.color === 'shinygold'
 });
 if (colorToFind.length !== 1) { throw new Error('Not exactly 1 color is found in the input'); }
-// console.log('colorToFind: ' + JSON.stringify(colorToFind));
 
 var parentBags = [];
 colorToFind[0].parentBags.forEach(parentBag => {
@@ -63,7 +60,6 @@ colorToFind[0].parentBags.forEach(parentBag => {
 });
 
 var possibleBagColors = new Set();
-var countMyBagsMan = 0;
 var i = parentBags.length;
 while (i--) {
     var currentBagInLoop = parentBags[i];
@@ -79,107 +75,22 @@ while (i--) {
         });
     });
 }
-// console.log('Puzzle One - : ' + possibleBagColors.size); // 151 or 4 for example
+console.log('Puzzle One - : ' + possibleBagColors.size); // 151 or 4 for example
 
-// var nLevelsDeep = 0;
-// function countChildBags(obj, countOfChildBags) {
-//     nLevelsDeep++;
-//     console.log('^^^^^^^n levels deep: ' + nLevelsDeep);
-//     console.log('countOfChildBags: ' + countOfChildBags);
+const countChildBagsRecursive = (bag) => {
+    var count = 1;
 
-//     var currentBagNumberOfChildbags = obj.numberOfChildBags;
-//     obj = input.find(objectToRetrieve => {
-//         return objectToRetrieve.color === obj.color;
-//     });
-//     console.log('object to iterate: ' + JSON.stringify(obj))
-
-//     if (obj.childBags === null || obj.childBags === undefined) { 
-//         throw new Error(
-//             'You have no childbags defined man'
-//         ); 
-//     }
-
-//     if (obj.childBags.length === 0) {
-//         nLevelsDeep--;
-
-//         return countOfChildBags + currentBagNumberOfChildbags;
-//     }
-
-//     if (obj.childBags.length !== 0) {
-//         obj.childBags.forEach(childBag => {
-//             var ret = currentBagNumberOfChildbags + currentBagNumberOfChildbags * countChildBags(childBag, countOfChildBags);
-//             console.log('ret: ' + ret);
-//             return ret;
-//         });
-//     }    
-// }
-
-var bagCount = 0;
-function retrieveAndAddChildBagCount(bag) {
-    var countInThisBag = 1;
-
-    console.log('******************');
-    console.log('bag to iterate: ' + JSON.stringify(bag));
-    
-    var foundBag = input.find(objectToRetrieve => {
-        return objectToRetrieve.color = bag.color;
-    });
-    var bagsChilds = foundBag.childBags
-
-    console.log('bagsChilds: ' + JSON.stringify(bagsChilds));
-
-    if (bagsChilds.length === 0) { return bag.numberOfChildBags; }
-
-    bagsChilds.forEach(childBag => {
-        countInThisBag += bag.numberOfChildBags * retrieveAndAddChildBagCount(childBag)
-        bagcount += countInThisBag;
+    bag = input.find(objectToRetrieve => {
+        return objectToRetrieve.color === bag.color;
     });
 
-    return bagcount;
+    // you don't need an explicit termination when there are no childs, since then there's nothing to 
+    // iterate over, and no recursion will be induced
+    bag.childBags.forEach(childBag => {
+        count += childBag.numberOfChildBags * countChildBagsRecursive(childBag);
+    });
+
+    return count;
 }
 
-colorToFind[0].numberOfChildBags = 1;
-console.log('puzzle two: ' + retrieveAndAddChildBagCount(colorToFind[0]));
-
-
-
-
-// var bagCount = 0;
-// function countChildBags(child, topLevelBagCount) {
-//     var multiplier = topLevelBagCount;
-//     console.log('********************');
-//     console.log('multiplier: ' + multiplier)
-//     child = input.find(objectToRetrieve => {
-//         return objectToRetrieve.color === child.color;
-//     });
-//     console.log('object to iterate: ' + JSON.stringify(child))
-
-//     if (child.childBags === null || child.childBags === undefined) { 
-//         throw new Error(
-//             'You have no childbags defined man'
-//         ); 
-//     }
-
-//     if (child.childBags.length === 0) { return; }
-
-//     console.log('childrenToAdd: ' + childrenToAdd);
-//     child.childBags.forEach(childBag => {
-
-//         const currentBagTotal = 0; // get current bag total som of child bags
-
-
-
-
-//         const childrenToAdd = multiplier * currentBagTotal;
-//         bagCount += childrenToAdd;
-
-//         countChildBags(childBag, childBag.numberOfChildBags)
-//     });
-//     return bagCount;
-// }
-
-// // colorToFind[0].numberOfChildBags = 1;
-// var totalCountBitch = countChildBags(colorToFind[0], 1);
-
-// console.log('Puzzle Two - : bagCount: ' + bagCount); // 
-// console.log('Puzzle Two - : bagCount minus 1: ' + (bagCount - 1)); // not 54670944795636, 32 in example, 126 in example 2
+console.log('Puzzle two: ' + (countChildBagsRecursive(colorToFind[0]) - 1 )); // puzzle two: 32 for example 1, 126 for example 2, 41559 for input

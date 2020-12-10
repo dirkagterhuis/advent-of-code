@@ -163,37 +163,3 @@
     ]
   }
 ]
-***
-colorToFind: {
-  "color": "shinygold",
-  "childBags": [
-    {
-      "color": "darkolive",
-      "numberOfChildBags": 1
-    },
-    {
-      "color": "vibrantplum",
-      "numberOfChildBags": 2
-    }
-  ],
-  "parentBags": [
-    {
-      "color": "brightwhite",
-      "numberOfBagsInParent": 1
-    },
-    {
-      "color": "mutedyellow",
-      "numberOfBagsInParent": 2
-    }
-  ]
-}
-colorToFind.parentBags[
-  {
-    "color": "brightwhite",
-    "numberOfBagsInParent": 1
-  },
-  {
-    "color": "mutedyellow",
-    "numberOfBagsInParent": 2
-  }
-]
