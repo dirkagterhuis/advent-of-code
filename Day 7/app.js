@@ -1,8 +1,9 @@
-const { Console } = require('console');
+const { count } = require('console');
 var fs = require('fs');
+const { setMaxListeners } = require('process');
 
 var input = [];
-fs.readFileSync('./inputExample2.txt', 'utf-8')
+fs.readFileSync('./inputExample.txt', 'utf-8')
     .trim()
     .replace(/\r\n/g, '\n')
     .split(/\n/g)
@@ -78,62 +79,107 @@ while (i--) {
         });
     });
 }
+// console.log('Puzzle One - : ' + possibleBagColors.size); // 151 or 4 for example
 
-var nLevelsDeep = 0;
-var totalBagCount = 0;
-var predecessingBagMultiplier = [];
-function iterate(obj) {
-    console.log('object to iterate: ' + JSON.stringify(obj))
-    nLevelsDeep++;
-    if (obj.numberOfChildBags) {
-        predecessingBagMultiplier.push(obj.numberOfChildBags);
-    }
-    console.log('*** totalBagCount before: ' + totalBagCount);
-    console.log('*** predecessingBagMultiplier after adding: ' + JSON.stringify(predecessingBagMultiplier));
+// var nLevelsDeep = 0;
+// function countChildBags(obj, countOfChildBags) {
+//     nLevelsDeep++;
+//     console.log('^^^^^^^n levels deep: ' + nLevelsDeep);
+//     console.log('countOfChildBags: ' + countOfChildBags);
 
-    var retrievedObjects = input.filter(objjectToRetrieve => {
-        return objjectToRetrieve.color === obj.color;
+//     var currentBagNumberOfChildbags = obj.numberOfChildBags;
+//     obj = input.find(objectToRetrieve => {
+//         return objectToRetrieve.color === obj.color;
+//     });
+//     console.log('object to iterate: ' + JSON.stringify(obj))
+
+//     if (obj.childBags === null || obj.childBags === undefined) { 
+//         throw new Error(
+//             'You have no childbags defined man'
+//         ); 
+//     }
+
+//     if (obj.childBags.length === 0) {
+//         nLevelsDeep--;
+
+//         return countOfChildBags + currentBagNumberOfChildbags;
+//     }
+
+//     if (obj.childBags.length !== 0) {
+//         obj.childBags.forEach(childBag => {
+//             var ret = currentBagNumberOfChildbags + currentBagNumberOfChildbags * countChildBags(childBag, countOfChildBags);
+//             console.log('ret: ' + ret);
+//             return ret;
+//         });
+//     }    
+// }
+
+var bagCount = 0;
+function retrieveAndAddChildBagCount(bag) {
+    var countInThisBag = 1;
+
+    console.log('******************');
+    console.log('bag to iterate: ' + JSON.stringify(bag));
+    
+    var foundBag = input.find(objectToRetrieve => {
+        return objectToRetrieve.color = bag.color;
     });
-    if (colorToFind.length !== 1) { throw new Error('Not exactly 1 color is found in the input'); }
-    obj = retrievedObjects[0];
+    var bagsChilds = foundBag.childBags
 
-    if (obj.childBags === null || obj.childBags === undefined) { 
-        throw new Error(
-            'You have no childbags defined man'
-        ); 
-    }
-    if (obj.childBags.length !== 0) {
-        var totalBagsForPermutation = 1;
-        predecessingBagMultiplier.forEach(bag => {
-            totalBagsForPermutation = totalBagsForPermutation * bag
-        });
-        console.log('totalBagsForPermutation: ' + totalBagsForPermutation);
+    console.log('bagsChilds: ' + JSON.stringify(bagsChilds));
 
-        totalBagCount = totalBagCount + totalBagsForPermutation;
+    if (bagsChilds.length === 0) { return bag.numberOfChildBags; }
 
-        obj.childBags.forEach(childBag => {
-            iterate(childBag);
-        });
-    }
-    if (obj.childBags.length === 0) {
-        var totalBagsForPermutation = 1;
-        predecessingBagMultiplier.forEach(bag => {
-            totalBagsForPermutation = totalBagsForPermutation * bag
-        });
-        console.log('totalBagsForPermutation: ' + totalBagsForPermutation);
+    bagsChilds.forEach(childBag => {
+        countInThisBag += bag.numberOfChildBags * retrieveAndAddChildBagCount(childBag)
+        bagcount += countInThisBag;
+    });
 
-
-        totalBagCount = totalBagCount + totalBagsForPermutation;
-
-        predecessingBagMultiplier.pop();
-        nLevelsDeep--;
-    }
-    console.log('*** totalBagCount after: ' + totalBagCount);
+    return bagcount;
 }
 
-//colorToFind[0].numberOfChildBags = 1;
-iterate(colorToFind[0]);
+colorToFind[0].numberOfChildBags = 1;
+console.log('puzzle two: ' + retrieveAndAddChildBagCount(colorToFind[0]));
 
-console.log('Puzzle One - : ' + possibleBagColors.size); // 151 or 4 for example
-console.log('Puzzle Two - : totalBagCount: ' + totalBagCount); // 
-console.log('Puzzle Two - : totalBagCount minus 1: ' + (totalBagCount - 1)); // not 54670944795636, 32 in example, 126 in example 2
+
+
+
+// var bagCount = 0;
+// function countChildBags(child, topLevelBagCount) {
+//     var multiplier = topLevelBagCount;
+//     console.log('********************');
+//     console.log('multiplier: ' + multiplier)
+//     child = input.find(objectToRetrieve => {
+//         return objectToRetrieve.color === child.color;
+//     });
+//     console.log('object to iterate: ' + JSON.stringify(child))
+
+//     if (child.childBags === null || child.childBags === undefined) { 
+//         throw new Error(
+//             'You have no childbags defined man'
+//         ); 
+//     }
+
+//     if (child.childBags.length === 0) { return; }
+
+//     console.log('childrenToAdd: ' + childrenToAdd);
+//     child.childBags.forEach(childBag => {
+
+//         const currentBagTotal = 0; // get current bag total som of child bags
+
+
+
+
+//         const childrenToAdd = multiplier * currentBagTotal;
+//         bagCount += childrenToAdd;
+
+//         countChildBags(childBag, childBag.numberOfChildBags)
+//     });
+//     return bagCount;
+// }
+
+// // colorToFind[0].numberOfChildBags = 1;
+// var totalCountBitch = countChildBags(colorToFind[0], 1);
+
+// console.log('Puzzle Two - : bagCount: ' + bagCount); // 
+// console.log('Puzzle Two - : bagCount minus 1: ' + (bagCount - 1)); // not 54670944795636, 32 in example, 126 in example 2
