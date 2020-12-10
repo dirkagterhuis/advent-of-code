@@ -49,6 +49,7 @@ input.forEach(currentColor => {
 // console.log(JSON.stringify(input, null, 2));
 
 // get the shiny gold bag from the input
+// at this point, a recursive function may be prettier, but i'm keeping this bitch!
 var colorToFind = input.filter(obj => {
     return obj.color === 'shinygold'
 });
