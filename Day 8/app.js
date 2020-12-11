@@ -14,7 +14,7 @@ fs.readFileSync('./input.txt', 'utf-8')
         });
     })
 
-var reboot = (input, acc) => {
+var reboot = (acc) => {
     for (i = 0; i < input.length; i++) {
             if (input[i].countExecuted !== 0) {
                 return acc;
@@ -23,15 +23,16 @@ var reboot = (input, acc) => {
                 acc += input[i].actionValue;
             }
             if (input[i].bootAction === 'jmp') { 
-                i += input[i].actionValue - 1; 
+                input[i].countExecuted++;
+                i += input[i].actionValue - 1;
+                continue;  
             }
-            //if (input[i].bootAction === 'nop') {}
             input[i].countExecuted++;
         }
     return acc;
 }
 
-console.log('Puzzle 1: ' + reboot(input, 0)); // 5 in example // 1941
+console.log('Puzzle 1: ' + reboot(0)); // 5 in example // 1941
 
 var reboot2 = (acc) => {
     for (j = 0; j < input.length; j++) {
