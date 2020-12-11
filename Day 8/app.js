@@ -8,35 +8,66 @@ fs.readFileSync('./input.txt', 'utf-8')
     .forEach(element => {
         var split = element.split(' ');
         input.push({ 
-            [split[0]]: parseInt(split[1]),
+            bootAction: split[0], 
+            actionValue: parseInt(split[1]),
             countExecuted: 0
         });
-
     })
 
-// console.log(input);
-
-var reboot = (input) => {
-    var acc = 0;
-
+var reboot = (input, acc) => {
     for (i = 0; i < input.length; i++) {
-        console.log('I: ' + i)
-        bootCode = input[i];
-        if (bootCode.countExecuted !== 0) {
-            return acc;
+            if (input[i].countExecuted !== 0) {
+                return acc;
+            }
+            if (input[i].bootAction === 'acc') { 
+                acc += input[i].actionValue;
+            }
+            if (input[i].bootAction === 'jmp') { 
+                i += input[i].actionValue - 1; 
+            }
+            //if (input[i].bootAction === 'nop') {}
+            input[i].countExecuted++;
         }
-
-        if ('acc' in bootCode) { 
-            acc += bootCode.acc;
-        }
-        if ('jmp' in bootCode) { 
-            i += bootCode.jmp - 1; 
-        }
-        if ('nop' in bootCode) {}
-        bootCode.countExecuted++;
-    }
-
     return acc;
 }
 
-console.log('Puzzle 1: ' + reboot(input)); // 5 in example
+console.log('Puzzle 1: ' + reboot(input, 0)); // 5 in example // 1941
+
+var reboot2 = (acc) => {
+    for (j = 0; j < input.length; j++) {
+        input.forEach(bootCode => {
+            bootCode.countExecuted = 0;
+        })
+
+        if (input[j].bootAction === 'acc') { continue; }
+        if (input[j].bootAction === 'jmp') { input[j].bootAction = 'nop'; }
+        else if (input[j].bootAction === 'nop') { input[j].bootAction = 'jmp'; }
+
+        acc = innerReboot(acc);
+        if (acc) { return acc; }
+
+        if (input[j].bootAction === 'jmp') { input[j].bootAction = 'nop'; }
+        else if (input[j].bootAction === 'nop') { input[j].bootAction = 'jmp'; }        
+    }
+}
+
+var innerReboot = (acc) => {
+    for (i = 0; i <= input.length; i++) {
+        if (i === input.length) { return acc; }
+        if (input[i].countExecuted !== 0) {
+            return null;
+        }
+        if (input[i].bootAction === 'acc') { 
+            acc += input[i].actionValue;
+        }
+        if (input[i].bootAction === 'jmp') { 
+            input[i].countExecuted++;
+            i += input[i].actionValue - 1;
+            continue; 
+        }
+        if (input[i].bootAction === 'nop') {}
+        input[i].countExecuted++;
+    }
+}
+
+console.log('Puzzle 2: ' + reboot2(0)); // 2096 or 8 in example
