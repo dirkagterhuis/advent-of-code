@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-var data: number[] = fs
+const data: number[] = fs
     .readFileSync('./input.txt', 'utf-8')
     .split(/[\r\n]+/g)
     .map((num) => parseInt(num, 10))
