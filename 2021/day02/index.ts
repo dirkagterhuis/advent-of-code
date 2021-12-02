@@ -39,8 +39,7 @@ console.log(
 function part1(): coordinates {
     const location: coordinates = { horizontal: 0, depth: 0 }
     for (let i = 0; i < data.length; i++) {
-        const command = data[i]
-        move1(location, command)
+        move1(location, data[i])
     }
     return location
 }
@@ -61,8 +60,7 @@ function move1(location: coordinates, command: vector) {
 function part2(): coordinates {
     const location: coordinates = { horizontal: 0, depth: 0, aim: 0 }
     for (let i = 0; i < data.length; i++) {
-        const command = data[i]
-        move2(location, command)
+        move2(location, data[i])
     }
     return location
 }
