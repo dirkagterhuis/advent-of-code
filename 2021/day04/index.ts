@@ -46,38 +46,26 @@ for (let i = 1; i < data.length; i++) {
 
 const numberOfBingoBoards = bingoBoards.length
 let bingoCounter: number = 0
+let currentDrawnNumber: number
 drawnNumbers: for (let i = 0; i < drawnNumbers.length; i++) {
-    console.log('######### DRAWN NUMBER: ' + drawnNumbers[i])
+    currentDrawnNumber = drawnNumbers[i]
     for (let j = 0; j < bingoBoards.length; j++) {
         if (bingoBoards[j].hasBingo === true) {
             continue
         }
-        draw(drawnNumbers[i], bingoBoards[j])
-
-        if (bingoCounter === 1) {
-            const sum = getSumOfUnmarkedNumbers(bingoBoards[j])
-            // console.log(bingoBoards[j].numbers)
-            console.log(
-                `FIRST BINGO! Drawn Number is: ${drawnNumbers[i]}, sum is: ${sum}, product is: ${
-                    drawnNumbers[i] * sum
-                }`
-            )
-        }
+        draw(currentDrawnNumber, bingoBoards[j])
 
         if (bingoCounter === numberOfBingoBoards) {
             const sum = getSumOfUnmarkedNumbers(bingoBoards[j])
-            console.log(bingoBoards[j].numbers)
             console.log(
-                `LAST BINGO! Drawn Number is: ${drawnNumbers[i]}, sum is: ${sum}, product is: ${
-                    drawnNumbers[i] * sum
+                `LAST BINGO! Drawn Number is: ${currentDrawnNumber}, sum is: ${sum}, product is: ${
+                    currentDrawnNumber * sum
                 }`
             )
             break drawnNumbers
         }
     }
 }
-// console.log(JSON.stringify(bingoBoards, null, 2))
-// console.log(JSON.stringify(bingoBoards))
 
 function draw(drawnNumber: number, bingoBoard: BingoBoard) {
     for (let row = 0; row < bingoBoard.numbers.length; row++) {
@@ -95,8 +83,16 @@ function draw(drawnNumber: number, bingoBoard: BingoBoard) {
 function checkForBingo(bingoBoard: BingoBoard) {
     if (bingoBoard.rowDrawnCount.includes(5) || bingoBoard.columnDrawnCount.includes(5)) {
         bingoBoard.hasBingo = true
+        if (bingoCounter === 0) {
+            const sum = getSumOfUnmarkedNumbers(bingoBoard)
+            console.log(
+                `FIRST BINGO! Drawn Number is: ${currentDrawnNumber}, sum is: ${sum}, product is: ${
+                    currentDrawnNumber * sum
+                }`
+            )
+        }
         bingoCounter++
-        console.log('BINGO!!')
+        // console.log('BINGO!!')
     }
 }
 
