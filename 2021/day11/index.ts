@@ -20,8 +20,8 @@ const numberOfRuns = 300
 let flashCount = 0
 let flashCountAt100
 
-// make this a while loop
-for (let i = 1; i <= numberOfRuns; i++) {
+let i: number = 1
+while (getSum() !== 0) {
     incrementAll()
     checkFlash()
     console.table(data)
@@ -29,18 +29,24 @@ for (let i = 1; i <= numberOfRuns; i++) {
     if (i === 100) {
         flashCountAt100 = flashCount
     }
-
-    if (getSum() === 0) {
-        console.log(`At 100 runs, flashcount is: ${flashCountAt100}`)
-        console.log(`Number of runs after first simulaneous flash: ${i} `)
-        break
-    }
+    i++
 }
+console.log(`At 100 runs, flashcount is: ${flashCountAt100}`)
+console.log(`Number of runs after first simulaneous flash: ${i - 1} `)
 
 function incrementAll() {
     for (let y = 0; y < data.length; y++) {
         for (let x = 0; x < data[y].length; x++) {
             data[y][x]++
+        }
+    }
+}
+
+function increment(elements: number[][]) {
+    for (let i = 0; i < elements.length; i++) {
+        let elementValue = data[elements[i][1]][elements[i][0]]
+        if (elementValue !== 0) {
+            data[elements[i][1]][elements[i][0]]++
         }
     }
 }
@@ -55,31 +61,18 @@ function getSum(): number {
     return sum
 }
 
-function increment(elements: number[][]) {
-    for (let i = 0; i < elements.length; i++) {
-        let elementValue = data[elements[i][1]][elements[i][0]]
-        if (elementValue !== 0) {
-            data[elements[i][1]][elements[i][0]]++
-        }
-    }
-}
-
 function checkFlash() {
     for (let y = 0; y < data.length; y++) {
         for (let x = 0; x < data[y].length; x++) {
             if (data[y][x] === 0 || data[y][x] < 10) {
                 continue
             }
-            flash(x, y)
+            flashCount++
+            increment(getNeighbours(x, y))
+            data[y][x] = 0
             checkFlash()
         }
     }
-}
-
-function flash(x: number, y: number) {
-    flashCount++
-    increment(getNeighbours(x, y))
-    data[y][x] = 0
 }
 
 function getNeighbours(x: number, y: number): number[][] {
@@ -89,11 +82,7 @@ function getNeighbours(x: number, y: number): number[][] {
             if (xDirection === 0 && yDirection === 0) {
                 continue
             }
-            if (
-                x + xDirection < 0 ||
-                y + yDirection < 0 ||
-                !coordExists(x + xDirection, y + yDirection)
-            ) {
+            if (!coordExists(x + xDirection, y + yDirection)) {
                 continue
             }
 
